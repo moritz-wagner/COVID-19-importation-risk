@@ -6,7 +6,7 @@ Multiple international cases of the novel coronavirus disease (COVID-19) have be
 
 ## Model
 
-Here a statistical model previously applied by [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) to countries that have observed exported cases is altered and extended to the rest of the world including African countries. Model estimates are based on a Poisson generalised linear regression model using the internationally observed cases so far to provide an estimate for the expected number of cases that may or may not have been observed in any given location.
+Here a statistical model previously developed by [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) to countries that have observed exported cases is altered and extended to the rest of the world including African countries. Model estimates are based on a Poisson generalised linear regression model using the internationally observed cases so far to provide an estimate for the expected number of cases that may or may not have been observed in any given location.
 
 Internationally exported cases were taken from [publicly available line list data collected by Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19).
 
