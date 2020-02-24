@@ -28,7 +28,7 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 
 ## Other related work
 
-* [The WorldPop group](https://www.worldpop.org/events/china) did an initial analysis of risk of importation based on travel volume, tables 6 and 7 focus on African countries and align with our estimates.
-* [EPIcx Lab](https://www.epicx-lab.com/news/preparedness-and-vulnerability-of-african-countries-against-introductions-of-2019-ncov) look at introduction risk to Africa based on air travel data including measures of capacity/preparedness (SPAR capacity index and Infectious Disease Vulnerability Index). Their relative risk estimates by country align with our estimates.
-* [MOBS lab](https://www.mobs-lab.org/2019ncov.html)
+* The [WorldPop group](https://www.worldpop.org/events/china) did an initial analysis of risk of importation based on travel volume, tables 6 and 7 focus on African countries and align with our estimates.
+* The [EPIcx Lab](https://www.epicx-lab.com/news/preparedness-and-vulnerability-of-african-countries-against-introductions-of-2019-ncov) look at introduction risk to Africa based on air travel data including measures of capacity/preparedness (SPAR capacity index and Infectious Disease Vulnerability Index). Their relative risk estimates by country align with our estimates.
+* The [MOBS lab](https://www.mobs-lab.org/2019ncov.html)
 * [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) study
