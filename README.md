@@ -22,4 +22,4 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 1. Expected number of cases to be observed given a country's GHS index (boxplot interval)
 2. Expeted number of cases to be observed assuming the highest GHS index for each country (red point range interval)
 
-[![Africa plot](/plots/risk_africa.png)]()
+![Africa plot](https://github.com/moritz-wagner/COVID-19-importation-risk/blob/master/plots/risk_africa.png)
