@@ -24,7 +24,7 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 
 [![Africa plot](plots/risk_africa.png)]()
 
-![Map](https://rpubs.com/mwagner/578052)
+[![Map](https://rpubs.com/mwagner/578052)]()
 
 ## Other related work
 
