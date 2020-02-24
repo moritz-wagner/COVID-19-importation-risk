@@ -169,3 +169,63 @@ df3 %>%
 png('plots/risk_africa.png',width = 8,height = 8,units = "in",res = 300)
 p
 dev.off()
+
+
+##Add map data------------
+library(rnaturalearth)
+library(sf)
+library(mapview)
+library(leaflet)
+
+worldmap <- ne_countries(returnclass = "sf")
+worldmap$Country <- countrycode(worldmap$name,origin = 'country.name',destination = 'country.name')
+
+df3 %<>% mutate(exp.obs.cases=paste0(round(fit,2),' (',round(lwr,2),'-',round(upr,2),')'),
+                exp.cases=paste0(round(fit2,2),' (',round(lwr2,2),'-',round(upr2,2),')'))
+
+map.plot <- full_join(worldmap,df3)
+map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% mutate_if(is.numeric,function (x) round(x,digits=2))
+map.plot
+mapview(map.plot,zcol = "fit2",col.regions=colorRampPalette(c('green','orange', 'red')))
+map.plot %>% 
+  # subset(continent=="Africa") %>% 
+  mapview(zcol = c("Cases_lm","fit2","fit"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('green','orange', 'red')),
+          at=round(c(0,1,5,10,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Observed Cases','Expected Cases','Expected Observed Cases'))
+# spdf_africa %>% subset(continent=="Africa") -> Africa
+
+map.plot %>% 
+  # subset(continent=="Africa") %>% 
+  mapview(zcol = c("fit2"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Expected Cases')) -> m
+mapshot(m)
+
+
+
+mapviewOptions(default = TRUE)
+Africa$logrisk <- log(Africa$risk)
+Africa %>% mutate(risk=ifelse(is.na(risk),"missing",risk))
+mapview(Africa,zcol = "risk",col.regions=colorRampPalette(c('green','orange', 'red')),legend=FALSE) -> m
+
+
+map.plot.cent <- st_centroid(map.plot)
+map.plot %>% mapview(zcol = c("Cases_lm","fit2","fit"),
+                     label=map.plot$name,
+                     col.regions=colorRampPalette(c('green','orange', 'red')),
+                     at=round(c(0,1,5,10,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+                     layer.name = c('Observed Cases','Expected Cases','Expected Observed Cases'))+
+  map.plot.cent %>%
+  mapview(cex="fit") +
+  map.plot.cent %>%
+  mapview(cex="fit2",color="red") +
+  map.plot.cent %>%
+  mapview(cex="Cases_lm",color="black")
+
+# subset(continent=="Africa") %>% 
+
+
