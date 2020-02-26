@@ -22,17 +22,12 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 1. Expected number of cases to be observed given a country's GHS index (boxplot interval)
 2. Expeted number of cases to be observed assuming the highest GHS index for each country (red point range interval)
 
-<<<<<<< HEAD
 [![World barchart](plots/risk_world.png)]()
 
 Click [here](https://rpubs.com/mwagner/578854) for an interactive map that shows the model estimates and the exported cases observed so far.
 
 [![nCov risk map](plots/worldmap.png)](https://rpubs.com/mwagner/578854)
-=======
-[![Africa plot](plots/risk_africa.png)]()
->>>>>>> e3cec673dd3b0c59ff8e8acf7b739b2dded0e424
 
-[![Map](https://rpubs.com/mwagner/578052)]()
 
 ## Other related work
 
