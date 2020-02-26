@@ -1,5 +1,5 @@
 # Importation Risk of COVID-19 to African countries
-## Hi
+
 ## Background
 
 Multiple international cases of the novel coronavirus disease (COVID-19) have been observed outside of China since the start of the epidemic. Whilst the majority of these are exported cases with a direct link to the epidemic in China, some countries are seeing cases of sustained onwards transmissions as well. Outbreaks in other countries of the magnitude observed in China would pose a significant strain on public health resources, in particular in resource poor settings across Africa. To limit this, early detection of imported cases is crucial.
