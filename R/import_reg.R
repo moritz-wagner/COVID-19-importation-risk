@@ -7,14 +7,24 @@ library(plotly)
 
 ### Read in line list data from (https://github.com/CSSEGISandData/COVID-19)-----------
 #Cases
-coronaData_c <- read.csv('data/time_series_19-covid-Confirmed.csv',
+coronaData_c <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
                          check.names = FALSE)
 #Deaths
-coronaData_d <- read.csv('data/time_series_19-covid-Deaths.csv',
+coronaData_d <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
                          check.names = FALSE)
 #Recovereds
-coronaData_r <- read.csv('data/time_series_19-covid-Recovered.csv',
+coronaData_r <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
                          check.names = FALSE)
+
+# #Cases
+# coronaData_c <- read.csv('data/time_series_19-covid-Confirmed.csv',
+#                          check.names = FALSE)
+# #Deaths
+# coronaData_d <- read.csv('data/time_series_19-covid-Deaths.csv',
+#                          check.names = FALSE)
+# #Recovereds
+# coronaData_r <- read.csv('data/time_series_19-covid-Recovered.csv',
+#                          check.names = FALSE)
 
 coronaData_c %<>% gather("date","confirmed",-c(1:5)) %>% mutate_if(is.numeric, ~replace_na(., 0))
 coronaData_r %<>% gather("date","recovered",-c(1:5)) %>% mutate_if(is.numeric, ~replace_na(., 0))
@@ -26,15 +36,15 @@ coronaData <- full_join(coronaData,coronaData_r[-c(3:5)])
 coronaData$date <- as.POSIXct(strptime(coronaData$date,format="%m/%d/%y"))
 colnames(coronaData)[c(1,2)] <- c("Province.State","Country.Region")
 
-##Only need latest date and countries outside of China 
-coronaData %>% 
+##Only need latest date and countries outside of China
+coronaData %>%
   mutate(isChina = (str_detect(Country.Region,
-                               "China"))) %>% 
-  subset(!isChina) %>% 
-  group_by(Country.Region) %>% 
-  mutate(latest_date=max(date)) %>% subset(date==latest_date) %>% 
+                               "China"))) %>%
+  subset(!isChina) %>%
+  group_by(Country.Region) %>%
+  mutate(latest_date=max(date)) %>% subset(date==latest_date) %>%
   #Counting all cases, so deaths and recovereds as well
-  ungroup() %>% mutate(cases=confirmed+death+recovered) %>% 
+  ungroup() %>% mutate(cases=confirmed+death+recovered) %>%
   group_by(Country.Region) %>% summarise(cases=sum(cases)) -> coronaData_exports
 
 #Check current number of exported cases
@@ -124,7 +134,7 @@ df3 <- data_flights[!data_flights$label%in%df$Country,c(4:6)]
 colnames(df3)[1] <- "Country"
 df3$Cases_lm <- 0
 df3$exported <- '0'
-df3 <- bind_rows(df,df3) 
+df3 <- bind_rows(df,df3)
 ##Set ghs of all predictions to top (equivalent to US)
 df3$ghs <- sort(data_ghs$value,decreasing = TRUE)[1]
 new_data <- df3 %>% na.omit()
@@ -141,7 +151,7 @@ colnames(df3)[5] <- 'ghs2'
 df3 <- full_join(df3,df2)
 
 #Same plot as https://github.com/c2-d2/cov19flightimport
-df3 %>% 
+df3 %>%
   ggplot()+
   geom_point(aes(x=risk,y=Cases_lm,color=exported), size=3 ,alpha=1)+
   geom_line(aes(x=risk,y=fit2),size=1, colour="grey80")+
@@ -156,19 +166,34 @@ df3$Continent <- countrycode(sourcevar = df3[, "Country"],
                              origin = "country.name",
                              destination = "continent")
 
-df3 %>% 
-  subset(Continent%in%'Africa') %>% 
+df3 %>%
+  # subset(Continent%in%'Africa') %>%
   ggplot(aes(x=reorder(Country,risk)))+
   geom_bar(aes(y=Cases_lm),alpha=.7,stat = "identity")+
   geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
   geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
   coord_flip()+
-  ggtitle("Reported exported cases  vs\n95% CI of expected exported cases")+
+  # ggtitle("Reported exported cases  vs\n95% CI of expected exported cases")+
   theme(axis.title.y = element_blank())+ylab("Cases") -> p
 
-png('plots/risk_africa.png',width = 8,height = 8,units = "in",res = 300)
+png('plots/risk_world.png',width = 8,height = 18,units = "in",res = 300)
 p
 dev.off()
+
+df3 %>%
+  subset(Continent%in%'Africa') %>%
+  ggplot(aes(x=reorder(Country,risk)))+
+  geom_bar(aes(y=Cases_lm),alpha=.7,stat = "identity")+
+  geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+  geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
+  coord_flip()+
+  # ggtitle("Reported exported cases  vs\n95% CI of expected exported cases")+
+  theme(axis.title.y = element_blank())+ylab("Cases") -> p
+
+png('plots/risk_africa.png',width = 8,height = 9,units = "in",res = 300)
+p
+dev.off()
+
 
 
 ##Add map data------------
@@ -184,25 +209,106 @@ df3 %<>% mutate(exp.obs.cases=paste0(round(fit,2),' (',round(lwr,2),'-',round(up
                 exp.cases=paste0(round(fit2,2),' (',round(lwr2,2),'-',round(upr2,2),')'))
 
 map.plot <- full_join(worldmap,df3)
-map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% mutate_if(is.numeric,function (x) round(x,digits=2))
-map.plot
-mapview(map.plot,zcol = "fit2",col.regions=colorRampPalette(c('green','orange', 'red')))
-map.plot %>% 
-  # subset(continent=="Africa") %>% 
-  mapview(zcol = c("Cases_lm","fit2","fit"),
-          label=map.plot$name,
-          col.regions=colorRampPalette(c('green','orange', 'red')),
-          at=round(c(0,1,5,10,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
-          layer.name = c('Observed Cases','Expected Cases','Expected Observed Cases'))
-# spdf_africa %>% subset(continent=="Africa") -> Africa
+p <- foreach(i=1:nrow(map.plot)) %dopar%  {
+  map.plot[i,] %>% ggplot(aes(x=""))+
+    geom_bar(aes(y=Cases_lm),alpha=.5,stat = "identity")+
+    geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+    # geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+    geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
+    coord_flip()+
+    ggtitle(x$Country) -> p
+  p
+}
 
-map.plot %>% 
-  # subset(continent=="Africa") %>% 
+
+map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% mutate_if(is.numeric,function (x) round(x,digits=2))
+names(map.plot)[1:3] <- c("Country","Continent","Cases")
+
+map.plot %>%
+  subset(Continent=="Africa") %>%
+  mapview(zcol = c("fit2"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          # at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Expected Cases'),
+          popup=popupTable(map.plot,
+                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+                           feature.id = FALSE,row.numbers = FALSE),
+          legend=FALSE,
+          alpha.regions=.5
+  ) -> m
+
+mapshot(m,file = paste0(getwd(), "/plots/africamap.png"))
+
+
+map.plot %>%
+  # subset(continent=="Africa") %>%
   mapview(zcol = c("fit2"),
           label=map.plot$name,
           col.regions=colorRampPalette(c('white', 'red')),
           at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
-          layer.name = c('Expected Cases')) -> m
+          layer.name = c('Expected Cases'),
+          popup=popupTable(map.plot,
+                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+                           feature.id = FALSE,row.numbers = FALSE)) -> m1
+
+map.plot %>%
+  # subset(continent=="Africa") %>%
+  mapview(zcol = c("fit"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Expected Observed Cases'),
+          popup=popupTable(map.plot,
+                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+                           feature.id = FALSE,row.numbers = FALSE),
+          hide=TRUE) -> m2
+
+map.plot %>%
+  # subset(continent=="Africa") %>%
+  mapview(zcol = c("Cases"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Observed Cases'),
+          popup=popupTable(map.plot,
+                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+                           feature.id = FALSE,row.numbers = FALSE),
+          hide=TRUE) -> m3
+
+m1+m2+m3
+
+mapshot(m1,file = paste0(getwd(), "/plots/worldmap.png"))
+
+map.plot %>%
+  # subset(continent=="Africa") %>%
+  mapview(zcol = c("fit2","fit","Cases"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          at=rep(round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),3),
+          layer.name = c('Expected Cases'),
+          # popup=popupTable(map.plot,
+          #                  zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+          #                  feature.id = FALSE,row.numbers = FALSE),
+          hide=TRUE,
+          popup=popupGraph(p))
+
+map.plot %>%
+  mutate(risk=fit2-fit) %>%
+  mutate(risk=(fit2-fit)/fit2) %>%
+  mapview(zcol = c("risk"),
+          label=map.plot$name,
+          col.regions=colorRampPalette(c('white', 'red')),
+          # at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+          layer.name = c('Number of cases that may be missed'),
+          popup=popupTable(map.plot,
+                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+                           feature.id = FALSE,row.numbers = FALSE)
+  ) -> m4
+
+
+m1+m2+m3+m4
+
 mapshot(m)
 
 
@@ -226,6 +332,6 @@ map.plot %>% mapview(zcol = c("Cases_lm","fit2","fit"),
   map.plot.cent %>%
   mapview(cex="Cases_lm",color="black")
 
-# subset(continent=="Africa") %>% 
+# subset(continent=="Africa") %>%
 
 

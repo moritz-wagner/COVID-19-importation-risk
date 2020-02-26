@@ -8,14 +8,14 @@ library(plotly)
 ### Read in line list data from (https://github.com/CSSEGISandData/COVID-19)-----------
 ##Note these links may change!
 #Cases
-# coronaData_c <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
-#                          check.names = FALSE)
-# #Deaths
-# coronaData_d <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
-#                          check.names = FALSE)
-# #Recovereds
-# coronaData_r <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
-#                          check.names = FALSE)
+coronaData_c <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
+                         check.names = FALSE)
+#Deaths
+coronaData_d <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
+                         check.names = FALSE)
+#Recovereds
+coronaData_r <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
+                         check.names = FALSE)
 
 #Cases
 coronaData_c <- read.csv('COVID-19/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
