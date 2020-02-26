@@ -6,7 +6,7 @@ Multiple international cases of the novel coronavirus disease (COVID-19) have be
 
 ## Model
 
-Here a statistical model previously applied by [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) to countries that have observed exported cases is altered and extended to the rest of the world including African countries. Model estimates are based on a Poisson generalised linear regression model using the internationally observed cases so far to provide an estimate for the expected number of cases that may or may not have been observed in any given location.
+Here a statistical model previously developed by [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) to countries that have observed exported cases is altered and extended to the rest of the world including African countries. Model estimates are based on a Poisson generalised linear regression model using the internationally observed cases so far to provide an estimate for the expected number of cases that may or may not have been observed in any given location.
 
 Internationally exported cases were taken from [publicly available line list data collected by Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19).
 
@@ -22,15 +22,21 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 1. Expected number of cases to be observed given a country's GHS index (boxplot interval)
 2. Expeted number of cases to be observed assuming the highest GHS index for each country (red point range interval)
 
+<<<<<<< HEAD
 [![World barchart](plots/risk_world.png)]()
 
 Click [here](https://rpubs.com/mwagner/578854) for an interactive map that shows the model estimates and the exported cases observed so far.
 
 [![nCov risk map](plots/worldmap.png)](https://rpubs.com/mwagner/578854)
+=======
+[![Africa plot](plots/risk_africa.png)]()
+>>>>>>> e3cec673dd3b0c59ff8e8acf7b739b2dded0e424
+
+[![Map](https://rpubs.com/mwagner/578052)]()
 
 ## Other related work
 
-* [The WorldPop group](https://www.worldpop.org/events/china) did an initial analysis of risk of importation based on travel volume, tables 6 and 7 focus on African countries and align with our estimates.
-* [EPIcx Lab](https://www.epicx-lab.com/news/preparedness-and-vulnerability-of-african-countries-against-introductions-of-2019-ncov) look at introduction risk to Africa based on air travel data including measures of capacity/preparedness (SPAR capacity index and Infectious Disease Vulnerability Index). Their relative risk estimates by country align with our estimates.
-* [MOBS lab](https://www.mobs-lab.org/2019ncov.html)
+* The [WorldPop group](https://www.worldpop.org/events/china) did an initial analysis of risk of importation based on travel volume, tables 6 and 7 focus on African countries and align with our estimates.
+* The [EPIcx Lab](https://www.epicx-lab.com/news/preparedness-and-vulnerability-of-african-countries-against-introductions-of-2019-ncov) look at introduction risk to Africa based on air travel data including measures of capacity/preparedness (SPAR capacity index and Infectious Disease Vulnerability Index). Their relative risk estimates by country align with our estimates.
+* The [MOBS lab](https://www.mobs-lab.org/2019ncov.html)
 * [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) study
