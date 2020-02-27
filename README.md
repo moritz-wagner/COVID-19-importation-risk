@@ -1,4 +1,5 @@
 # Importation Risk of COVID-19 to African countries
+*Latest data update: 25.02.2020*
 
 ## Background
 
@@ -19,20 +20,17 @@ Note that [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495) utilis
 ## Results
 
 Predictions were made using the same bootstrapping methodology as in [De Salazar et al](https://doi.org/10.1101/2020.02.04.20020495). Two 95% Prediction interval estimates were created for each country:
-1. Expected number of cases to be observed given a country's GHS index (boxplot interval)
-2. Expeted number of cases to be observed assuming the highest GHS index for each country (red point range interval)
+1. Expected number of cases to be observed given a country's GHS index (red point range interval)
+2. Expected number of cases to be observed assuming the global top GHS index (equivalent to the US) for each country (boxplot interval)
 
-<<<<<<< HEAD
-[![World barchart](plots/risk_world.png)]()
+The grey bars show the exported cases that have been observed.
+
+[![World barchart](plots/risk_world.png)](https://raw.githubusercontent.com/moritz-wagner/COVID-19-importation-risk/master/plots/risk_world.png)
 
 Click [here](https://rpubs.com/mwagner/578854) for an interactive map that shows the model estimates and the exported cases observed so far.
 
 [![nCov risk map](plots/worldmap.png)](https://rpubs.com/mwagner/578854)
-=======
-[![Africa plot](plots/risk_africa.png)]()
->>>>>>> e3cec673dd3b0c59ff8e8acf7b739b2dded0e424
 
-[![Map](https://rpubs.com/mwagner/578052)]()
 
 ## Other related work
 
