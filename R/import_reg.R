@@ -209,19 +209,20 @@ df3 %<>% mutate(exp.obs.cases=paste0(round(fit,2),' (',round(lwr,2),'-',round(up
                 exp.cases=paste0(round(fit2,2),' (',round(lwr2,2),'-',round(upr2,2),')'))
 
 map.plot <- full_join(worldmap,df3)
-p <- foreach(i=1:nrow(map.plot)) %dopar%  {
-  map.plot[i,] %>% ggplot(aes(x=""))+
-    geom_bar(aes(y=Cases_lm),alpha=.5,stat = "identity")+
-    geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
-    # geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
-    geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
-    coord_flip()+
-    ggtitle(x$Country) -> p
-  p
-}
+# p <- foreach(i=1:nrow(map.plot)) %dopar%  {
+#   map.plot[i,] %>% ggplot(aes(x=""))+
+#     geom_bar(aes(y=Cases_lm),alpha=.5,stat = "identity")+
+#     geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+#     # geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+#     geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
+#     coord_flip()+
+#     ggtitle(x$Country) -> p
+#   p
+# }
+# 
 
-
-map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% mutate_if(is.numeric,function (x) round(x,digits=2))
+map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% 
+  mutate_if(is.numeric,function (x) round(x,digits=2))
 names(map.plot)[1:3] <- c("Country","Continent","Cases")
 
 map.plot %>%
@@ -306,32 +307,4 @@ map.plot %>%
                            feature.id = FALSE,row.numbers = FALSE)
   ) -> m4
 
-
 m1+m2+m3+m4
-
-mapshot(m)
-
-
-
-mapviewOptions(default = TRUE)
-Africa$logrisk <- log(Africa$risk)
-Africa %>% mutate(risk=ifelse(is.na(risk),"missing",risk))
-mapview(Africa,zcol = "risk",col.regions=colorRampPalette(c('green','orange', 'red')),legend=FALSE) -> m
-
-
-map.plot.cent <- st_centroid(map.plot)
-map.plot %>% mapview(zcol = c("Cases_lm","fit2","fit"),
-                     label=map.plot$name,
-                     col.regions=colorRampPalette(c('green','orange', 'red')),
-                     at=round(c(0,1,5,10,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
-                     layer.name = c('Observed Cases','Expected Cases','Expected Observed Cases'))+
-  map.plot.cent %>%
-  mapview(cex="fit") +
-  map.plot.cent %>%
-  mapview(cex="fit2",color="red") +
-  map.plot.cent %>%
-  mapview(cex="Cases_lm",color="black")
-
-# subset(continent=="Africa") %>%
-
-
