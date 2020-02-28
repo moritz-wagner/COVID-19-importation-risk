@@ -194,6 +194,20 @@ png('plots/risk_africa.png',width = 8,height = 9,units = "in",res = 300)
 p
 dev.off()
 
+df3 %>%
+  # subset(Continent%in%'Africa') %>%
+  ggplot(aes(x=reorder(Country,risk)))+
+  geom_bar(aes(y=Cases_lm),alpha=.7,stat = "identity")+
+  geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+  geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
+  coord_flip()+
+  # ggtitle("Reported exported cases  vs\n95% CI of expected exported cases")+
+  theme(axis.title.y = element_blank())+ylab("Cases")+
+  facet_wrap(~Continent,scales = "free",ncol = 2) -> p
+
+png('plots/risk_by_continent.png',width = 10,height = 15,units = "in",res = 300)
+p
+dev.off()
 
 
 ##Add map data------------

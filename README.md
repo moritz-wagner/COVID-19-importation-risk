@@ -25,7 +25,7 @@ Predictions were made using the same bootstrapping methodology as in [De Salazar
 
 The grey bars show the exported cases that have been observed.
 
-[![World barchart](plots/risk_world.png)](https://raw.githubusercontent.com/moritz-wagner/COVID-19-importation-risk/master/plots/risk_world.png)
+[![World barchart](plots/risk_by_continent.png)](https://raw.githubusercontent.com/moritz-wagner/COVID-19-importation-risk/master/plots/risk_by_continent.png)
 
 Click [here](https://rpubs.com/mwagner/579689) for an interactive map that shows the model estimates and the exported cases observed so far.
 
