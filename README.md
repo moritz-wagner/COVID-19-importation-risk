@@ -27,9 +27,9 @@ The grey bars show the exported cases that have been observed.
 
 [![World barchart](plots/risk_world.png)](https://raw.githubusercontent.com/moritz-wagner/COVID-19-importation-risk/master/plots/risk_world.png)
 
-Click [here](https://rpubs.com/mwagner/578854) for an interactive map that shows the model estimates and the exported cases observed so far.
+Click [here](https://rpubs.com/mwagner/579689) for an interactive map that shows the model estimates and the exported cases observed so far.
 
-[![nCov risk map](plots/worldmap.png)](https://rpubs.com/mwagner/578854)
+[![nCov risk map](plots/worldmap.png)](https://rpubs.com/mwagner/579689)
 
 
 ## Other related work

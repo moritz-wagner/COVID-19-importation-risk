@@ -7,13 +7,13 @@ library(plotly)
 
 ### Read in line list data from (https://github.com/CSSEGISandData/COVID-19)-----------
 #Cases
-coronaData_c <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
+coronaData_c <- read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv',
                          check.names = FALSE)
 #Deaths
-coronaData_d <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
+coronaData_d <- read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Deaths.csv',
                          check.names = FALSE)
 #Recovereds
-coronaData_r <- read.csv('https://raw.githubusercontent.com/moritz-wagner/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
+coronaData_r <- read.csv('https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Recovered.csv',
                          check.names = FALSE)
 
 # #Cases
@@ -209,17 +209,22 @@ df3 %<>% mutate(exp.obs.cases=paste0(round(fit,2),' (',round(lwr,2),'-',round(up
                 exp.cases=paste0(round(fit2,2),' (',round(lwr2,2),'-',round(upr2,2),')'))
 
 map.plot <- full_join(worldmap,df3)
-# p <- foreach(i=1:nrow(map.plot)) %dopar%  {
-#   map.plot[i,] %>% ggplot(aes(x=""))+
-#     geom_bar(aes(y=Cases_lm),alpha=.5,stat = "identity")+
-#     geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
-#     # geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
-#     geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
-#     coord_flip()+
-#     ggtitle(x$Country) -> p
-#   p
-# }
-# 
+g <- foreach(i=1:nrow(map.plot)) %dopar%  {
+  df3 %>%
+    subset(Continent%in%map.plot[i,'Continent']) -> df3.g
+  a <- ifelse(df3.g$Country[order(df3.g$risk)]%in%map.plot[i,'Country'],"red","black")
+  df3.g %>% 
+    ggplot(aes(x=reorder(Country,risk)))+
+    geom_bar(aes(y=Cases_lm),alpha=.7,stat = "identity")+
+    geom_pointrange(aes(y=fit,ymin=lwr,ymax=upr),color="red")+
+    geom_crossbar(aes(y=fit2,ymin=lwr2,ymax=upr2))+
+    theme(axis.text.y = element_text(colour = a))+
+    coord_flip()+
+    theme(axis.title.y = element_blank())+ylab("Cases")+
+    ggtitle(map.plot[i,'Continent'])-> g
+  g
+}
+
 
 map.plot %<>% select(c('name','continent','Cases_lm','fit','fit2','exp.obs.cases','exp.cases')) %>% 
   mutate_if(is.numeric,function (x) round(x,digits=2))
@@ -283,16 +288,20 @@ mapshot(m1,file = paste0(getwd(), "/plots/worldmap.png"))
 
 map.plot %>%
   # subset(continent=="Africa") %>%
-  mapview(zcol = c("fit2","fit","Cases"),
+  mapview(zcol = c("fit2"),
           label=map.plot$name,
           col.regions=colorRampPalette(c('white', 'red')),
-          at=rep(round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),3),
+          at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
           layer.name = c('Expected Cases'),
           # popup=popupTable(map.plot,
           #                  zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
           #                  feature.id = FALSE,row.numbers = FALSE),
           hide=TRUE,
-          popup=popupGraph(p))
+          popup=popupGraph(g)) -> m4
+
+m4+m2+m3
+
+mapshot(m4,file = paste0(getwd(), "/plots/worldmap.png"))
 
 map.plot %>%
   mutate(risk=fit2-fit) %>%
