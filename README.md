@@ -1,5 +1,5 @@
 # Importation Risk of COVID-19 to African countries
-*Latest data update: 25.02.2020*
+*Latest data update: 02.03.2020*
 
 ## Background
 
