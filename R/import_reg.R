@@ -317,17 +317,17 @@ m4+m2+m3
 
 mapshot(m4,file = paste0(getwd(), "/plots/worldmap.png"))
 
-map.plot %>%
-  mutate(risk=fit2-fit) %>%
-  mutate(risk=(fit2-fit)/fit2) %>%
-  mapview(zcol = c("risk"),
-          label=map.plot$name,
-          col.regions=colorRampPalette(c('white', 'red')),
-          # at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
-          layer.name = c('Number of cases that may be missed'),
-          popup=popupTable(map.plot,
-                           zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
-                           feature.id = FALSE,row.numbers = FALSE)
-  ) -> m4
-
-m1+m2+m3+m4
+# map.plot %>%
+#   mutate(risk=fit2-fit) %>%
+#   mutate(risk=(fit2-fit)/fit2) %>%
+#   mapview(zcol = c("risk"),
+#           label=map.plot$name,
+#           col.regions=colorRampPalette(c('white', 'red')),
+#           # at=round(c(0,1,5,10,20,max(map.plot$fit2,na.rm = TRUE)),digits = 0),
+#           layer.name = c('Number of cases that may be missed'),
+#           popup=popupTable(map.plot,
+#                            zcol=c('Country','Continent','Cases','exp.obs.cases','exp.cases'),
+#                            feature.id = FALSE,row.numbers = FALSE)
+#   ) -> m4
+# 
+# m1+m2+m3+m4
